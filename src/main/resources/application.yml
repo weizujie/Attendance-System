@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/studentmanager?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/attendance_system?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
     password: toor
   servlet:
@@ -9,8 +9,6 @@ spring:
       max-file-size: 30MB
       max-request-size: 30MB
 
-
 mybatis:
   type-aliases-package: com.example.entity
   mapper-locations: classpath:mapper/*.xml
-
