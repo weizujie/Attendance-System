@@ -10,12 +10,10 @@
         <result column="clazz_id" property="clazzId"/>
         <result column="sex" property="sex"/>
         <result column="mobile" property="mobile"/>
-        <result column="qq" property="qq"/>
-        <result column="photo" property="photo"/>
     </resultMap>
 
     <select id="queryList" resultMap="StudentInfo">
-        <!-- 根据条件查询 图书的所有信息 -->
+        <!-- 根据条件查询所有信息 -->
         SELECT *
         from s_student
         <where>
@@ -36,8 +34,8 @@
     </select>
 
     <insert id="addStudent" parameterType="Student">
-        insert into s_student(sn, username, password, clazz_id, sex, mobile, qq, photo)
-        values (#{sn}, #{username}, #{password}, #{clazzId}, #{sex}, #{mobile}, #{qq}, #{photo})
+        insert into s_student(sn, username, password, clazz_id, sex, mobile)
+        values (#{sn}, #{username}, #{password}, #{clazzId}, #{sex}, #{mobile})
     </insert>
 
     <delete id="deleteStudent" parameterType="java.util.ArrayList">
@@ -64,12 +62,6 @@
             </if>
             <if test="mobile != null">
                 mobile = #{mobile},
-            </if>
-            <if test="qq != null">
-                qq = #{qq},
-            </if>
-            <if test="photo != null">
-                photo = #{photo},
             </if>
         </set>
         where id = #{id}

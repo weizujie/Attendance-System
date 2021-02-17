@@ -43,13 +43,12 @@ public class StudentController {
     @ResponseBody
     public Object getStudentList(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                  @RequestParam(value = "rows", defaultValue = "100") Integer rows,
-                                 String studentName,
-                                 @RequestParam(value = "clazzid", defaultValue = "0") String clazzid, String from, HttpSession session) {
+                                 @RequestParam(value = "clazzid", defaultValue = "0") String clazzid, String studentName, String from, HttpSession session) {
         Map<String, Object> paramMap = new HashMap();
         paramMap.put("pageno", page);
         paramMap.put("pagesize", rows);
         if (!StringUtils.isEmpty(studentName)) paramMap.put("username", studentName);
-        if (!clazzid.equals("0")) paramMap.put("clazzid", clazzid);
+        if (!"0".equals(clazzid)) paramMap.put("clazzid", clazzid);
 
         //判断是老师还是学生权限
         Student student = (Student) session.getAttribute(Const.STUDENT);
@@ -59,7 +58,7 @@ public class StudentController {
         }
 
         PageBean<Student> pageBean = studentService.queryPage(paramMap);
-        if (!StringUtils.isEmpty(from) && from.equals("combox")) {
+        if (!StringUtils.isEmpty(from) && "combox".equals(from)) {
             return pageBean.getDatas();
         } else {
             Map<String, Object> result = new HashMap();
@@ -75,6 +74,7 @@ public class StudentController {
     @PostMapping("/deleteStudent")
     @ResponseBody
     public AjaxResult deleteStudent(Data data) {
+
         AjaxResult ajaxResult = new AjaxResult();
         try {
             List<Integer> ids = data.getIds();
@@ -86,31 +86,21 @@ public class StudentController {
                     return ajaxResult;
                 }
             }
-            File fileDir = UploadUtil.getImgDirFile();
-            for (Integer id : ids) {
-                Student byId = studentService.findById(id);
-                if (!byId.getAvatar().isEmpty()) {
-                    File file = new File(fileDir.getAbsolutePath() + File.separator + byId.getAvatar());
-                    if (file != null) {
-                        file.delete();
-                    }
-                }
-            }
+
             int count = studentService.deleteStudent(ids);
             if (count > 0) {
                 ajaxResult.setSuccess(true);
                 ajaxResult.setMessage("全部删除成功");
-
             } else {
                 ajaxResult.setSuccess(false);
                 ajaxResult.setMessage("删除失败");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             ajaxResult.setSuccess(false);
             ajaxResult.setMessage("删除失败");
         }
+
         return ajaxResult;
     }
 
@@ -120,31 +110,12 @@ public class StudentController {
      */
     @RequestMapping("/addStudent")
     @ResponseBody
-    public AjaxResult addStudent(@RequestParam("file") MultipartFile[] files, Student student) throws IOException {
+    public AjaxResult addStudent(Student student) {
 
         AjaxResult ajaxResult = new AjaxResult();
+        // 设置随机学号
         student.setSn(SnGenerateUtil.generateSn(student.getClazzId()));
 
-        // 存放上传图片的文件夹
-        File fileDir = UploadUtil.getImgDirFile();
-        for (MultipartFile fileImg : files) {
-
-            // 拿到文件名
-            String extName = fileImg.getOriginalFilename().substring(fileImg.getOriginalFilename().lastIndexOf("."));
-            String uuidName = UUID.randomUUID().toString();
-
-            try {
-                // 构建真实的文件路径
-                File newFile = new File(fileDir.getAbsolutePath() + File.separator + uuidName + extName);
-
-                // 上传图片到 -》 “绝对路径”
-                fileImg.transferTo(newFile);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            student.setAvatar(uuidName + extName);
-        }
         //保存学生信息到数据库
         try {
             int count = studentService.addStudent(student);
@@ -161,7 +132,6 @@ public class StudentController {
             ajaxResult.setMessage("保存失败");
         }
 
-        ajaxResult.setSuccess(true);
         return ajaxResult;
     }
 
@@ -170,40 +140,9 @@ public class StudentController {
      */
     @PostMapping("/editStudent")
     @ResponseBody
-    public AjaxResult editStudent(@RequestParam("file") MultipartFile[] files, Student student) {
+    public AjaxResult editStudent(Student student) {
+
         AjaxResult ajaxResult = new AjaxResult();
-
-        // 存放上传图片的文件夹
-        File fileDir = UploadUtil.getImgDirFile();
-        for (MultipartFile fileImg : files) {
-
-            String name = fileImg.getOriginalFilename();
-            if (name.equals("")) {
-                break;
-            }
-
-            // 拿到文件名
-            String extName = fileImg.getOriginalFilename().substring(fileImg.getOriginalFilename().lastIndexOf("."));
-            String uuidName = UUID.randomUUID().toString();
-
-            try {
-                // 构建真实的文件路径
-                File newFile = new File(fileDir.getAbsolutePath() + File.separator + uuidName + extName);
-                // 上传图片到 -》 “绝对路径”
-                fileImg.transferTo(newFile);
-
-                Student byId = studentService.findById(student.getId());
-                File file = new File(fileDir.getAbsolutePath() + File.separator + byId.getAvatar());
-                if (file != null) {
-                    file.delete();
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            student.setAvatar(uuidName + extName);
-        }
-
         try {
             int count = studentService.editStudent(student);
             if (count > 0) {
@@ -220,4 +159,5 @@ public class StudentController {
         }
         return ajaxResult;
     }
+
 }

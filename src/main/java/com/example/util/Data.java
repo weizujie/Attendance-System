@@ -9,5 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Data {
+
     private List<Integer> ids;
+
 }

@@ -16,7 +16,5 @@ public class AjaxResult {
 
     private String message;
 
-    private String imgurl;
-
     private String type;
 }

@@ -13,7 +13,7 @@
     </resultMap>
 
     <select id="queryList" resultMap="CourseInfo">
-        <!-- 根据条件查询 图书的所有信息 -->
+        <!-- 根据条件查询所有信息 -->
         SELECT *
         from s_course
         <where>

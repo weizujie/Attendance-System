@@ -26,6 +26,4 @@ public class Student {
 
     private String mobile;
 
-    private String avatar; // 头像
-
 }

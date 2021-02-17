@@ -29,6 +29,14 @@ public class SystemController {
     private TeacherService teacherService;
 
     /**
+     * 跳转后台主页
+     */
+    @GetMapping("/index")
+    public String index() {
+        return "/system/index";
+    }
+
+    /**
      * 跳转登录界面
      */
     @GetMapping("/login")
@@ -36,9 +44,12 @@ public class SystemController {
         return "/login";
     }
 
-    @GetMapping("/personalView")
-    public String personalView() {
-        return "/system/personalView";
+    /**
+     * 跳转修改密码页面
+     */
+    @GetMapping("/editPassword")
+    public String editPassword() {
+        return "/system/editPassword";
     }
 
     /**
@@ -49,37 +60,6 @@ public class SystemController {
         session.invalidate();
         return "/login";
     }
-
-    /**
-     * 跳转后台主页
-     */
-    @GetMapping("/index")
-    public String index() {
-        return "/system/index";
-    }
-
-    /**
-     * 获取图片地址
-     */
-    @GetMapping("/getPhoto")
-    @ResponseBody
-    public AjaxResult getPhoto(@RequestParam(value = "sid", defaultValue = "0") Integer sid,
-                               @RequestParam(value = "tid", defaultValue = "0") Integer tid) {
-        AjaxResult ajaxResult = new AjaxResult();
-        if (sid != 0) {
-            Student student = studentService.findById(sid);
-            ajaxResult.setImgurl(student.getAvatar());
-            return ajaxResult;
-        }
-        if (tid != 0) {
-            Teacher teacher = teacherService.findById(tid);
-            ajaxResult.setImgurl(teacher.getAvatar());
-            return ajaxResult;
-        }
-
-        return ajaxResult;
-    }
-
 
     /**
      * 登录表单提交 校验
@@ -113,6 +93,7 @@ public class SystemController {
                     return ajaxResult;
                 }
                 ajaxResult.setSuccess(true);
+                // 将登录对象存到 session 对象中
                 session.setAttribute(Const.ADMIN, ad);
                 session.setAttribute(Const.USERTYPE, "1");
                 break;
@@ -156,19 +137,24 @@ public class SystemController {
      */
     @PostMapping("/editPassword")
     @ResponseBody
-    public AjaxResult editPassword(String password, String newpassword, HttpSession session) {
+    public AjaxResult editPassword(String password, String newPassword, HttpSession session) {
+
         AjaxResult ajaxResult = new AjaxResult();
+        // 从 session 中获取登录用户的类型
         String usertype = (String) session.getAttribute(Const.USERTYPE);
-        if (usertype.equals("1")) {
-            //管理员
+        // 判断是哪类用户登录
+        if ("1".equals(usertype)) {
+            // 从 session 中获取管理员对象
             Admin admin = (Admin) session.getAttribute(Const.ADMIN);
             if (!password.equals(admin.getPassword())) {
                 ajaxResult.setSuccess(false);
                 ajaxResult.setMessage("原密码错误");
                 return ajaxResult;
             }
-            admin.setPassword(newpassword);
+            // 设置新密码
+            admin.setPassword(newPassword);
             try {
+                // count: 影响行数，一般值为 1，除非有一模一样的用户数据
                 int count = adminService.editPwdByAdmin(admin);
                 if (count > 0) {
                     ajaxResult.setSuccess(true);
@@ -183,15 +169,16 @@ public class SystemController {
                 ajaxResult.setMessage("修改失败");
             }
         }
-        if (usertype.equals("2")) {
-            //学生
+
+        if ("2".equals(usertype)) {
+            //从 session 中获取学生对象
             Student student = (Student) session.getAttribute(Const.STUDENT);
             if (!password.equals(student.getPassword())) {
                 ajaxResult.setSuccess(false);
                 ajaxResult.setMessage("原密码错误");
                 return ajaxResult;
             }
-            student.setPassword(newpassword);
+            student.setPassword(newPassword);
             try {
                 int count = studentService.editPwdByStudent(student);
                 if (count > 0) {
@@ -207,15 +194,16 @@ public class SystemController {
                 ajaxResult.setMessage("修改失败");
             }
         }
-        if (usertype.equals("3")) {
-            //教师
+
+        if ("3".equals(usertype)) {
+            // 从 session 中获取教师对象
             Teacher teacher = (Teacher) session.getAttribute(Const.TEACHER);
             if (!password.equals(teacher.getPassword())) {
                 ajaxResult.setSuccess(false);
                 ajaxResult.setMessage("原密码错误");
                 return ajaxResult;
             }
-            teacher.setPassword(newpassword);
+            teacher.setPassword(newPassword);
             try {
                 int count = teacherService.editPwdByTeacher(teacher);
                 if (count > 0) {

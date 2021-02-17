@@ -76,14 +76,6 @@ public class TeacherController {
     public AjaxResult deleteTeacher(Data data) {
         AjaxResult ajaxResult = new AjaxResult();
         try {
-            File fileDir = UploadUtil.getImgDirFile();
-            for (Integer id : data.getIds()) {
-                Teacher byId = teacherService.findById(id);
-                if (!byId.getAvatar().isEmpty()) {
-                    File file = new File(fileDir.getAbsolutePath() + File.separator + byId.getAvatar());
-                    file.delete();
-                }
-            }
             int count = teacherService.deleteTeacher(data.getIds());
             if (count > 0) {
                 ajaxResult.setSuccess(true);
@@ -105,32 +97,10 @@ public class TeacherController {
      */
     @RequestMapping("/addTeacher")
     @ResponseBody
-    public AjaxResult addTeacher(@RequestParam("file") MultipartFile[] files, Teacher teacher) throws IOException {
+    public AjaxResult addTeacher(Teacher teacher) {
 
         AjaxResult ajaxResult = new AjaxResult();
         teacher.setSn(SnGenerateUtil.generateTeacherSn(teacher.getClazzId()));
-
-        // TODO: 将头像上传至 OSS
-        // 存放上传图片的文件夹
-        File fileDir = UploadUtil.getImgDirFile();
-        for (MultipartFile fileImg : files) {
-
-            // 获取文件名
-            String extName = fileImg.getOriginalFilename().substring(fileImg.getOriginalFilename().lastIndexOf("."));
-            String uuidName = UUID.randomUUID().toString();
-
-            try {
-                // 构建真实的文件路径
-                File newFile = new File(fileDir.getAbsolutePath() + File.separator + uuidName + extName);
-
-                // 上传图片到 -》 “绝对路径”
-                fileImg.transferTo(newFile);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            teacher.setAvatar(uuidName + extName);
-        }
 
         //保存学生信息到数据库
         try {
@@ -152,42 +122,14 @@ public class TeacherController {
         return ajaxResult;
     }
 
+    /**
+     * 修改教师信息
+     */
     @PostMapping("/editTeacher")
     @ResponseBody
-    public AjaxResult editTeacher(@RequestParam("file") MultipartFile[] files, Teacher teacher) {
+    public AjaxResult editTeacher(Teacher teacher) {
+
         AjaxResult ajaxResult = new AjaxResult();
-
-        // 存放上传图片的文件夹
-        File fileDir = UploadUtil.getImgDirFile();
-        for (MultipartFile fileImg : files) {
-
-            String name = fileImg.getOriginalFilename();
-            if ("".equals(name)) {
-                break;
-            }
-
-            // 拿到文件名
-            String extName = fileImg.getOriginalFilename().substring(fileImg.getOriginalFilename().lastIndexOf("."));
-            String uuidName = UUID.randomUUID().toString();
-
-            try {
-                // 构建真实的文件路径
-                File newFile = new File(fileDir.getAbsolutePath() + File.separator + uuidName + extName);
-                // 上传图片到 -》 “绝对路径”
-                fileImg.transferTo(newFile);
-
-                Teacher byId = teacherService.findById(teacher.getId());
-                File file = new File(fileDir.getAbsolutePath() + File.separator + byId.getAvatar());
-                if (file != null) {
-                    file.delete();
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            teacher.setAvatar(uuidName + extName);
-        }
-
         try {
             int count = teacherService.editTeacher(teacher);
             if (count > 0) {

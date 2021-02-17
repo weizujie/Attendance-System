@@ -8,21 +8,34 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Component
-public class MyWebMvcConfig implements WebMvcConfigurer {
+public class WebMvcConfig implements WebMvcConfigurer {
 
+    /**
+     * 无业务逻辑跳转
+     * 当访问 http://localhost:8080/ 时,跳转到登录页面
+     */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("/login");
+        registry.addViewController("/")
+                .setViewName("/login");
     }
 
+    /**
+     * 解决静态资源无法访问的问题
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
     }
 
+    /**
+     * 配置自定义的登录拦截器
+     */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/", "/system/login", "/system/checkCode", "/easyui/**", "/h-ui/**", "/upload/**");
+        registry.addInterceptor(new LoginInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/", "/system/login", "/easyui/**", "/h-ui/**", "/upload/**");
     }
 }

@@ -16,6 +16,10 @@ import java.io.IOException;
  */
 public class LoginInterceptor implements HandlerInterceptor {
 
+    /**
+     * 在请求处理之前进行调用（Controller方法调用之前）
+     * 检查是否存在 session,具体拦截哪些页面可以在 config/WebMvcConfig.java 中查看
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
 
@@ -30,7 +34,6 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         response.sendRedirect(request.getContextPath() + "/system/login");
-
         return false;
     }
 

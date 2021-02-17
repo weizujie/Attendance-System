@@ -77,7 +77,7 @@ public class AttendanceController {
     }
 
     /**
-     * 通过 选课信息中的课程id 查询 学生所选择的课程
+     * 通过选课信息中的课程 id 查询学生所选择的课程
      */
     @RequestMapping("/getStudentSelectedCourseList")
     @ResponseBody
