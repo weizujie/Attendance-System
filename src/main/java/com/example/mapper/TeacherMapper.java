@@ -1,25 +1,26 @@
 package com.example.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.entity.Teacher;
 
 import java.util.List;
 import java.util.Map;
 
-public interface TeacherMapper {
+public interface TeacherMapper extends BaseMapper<Teacher> {
 
     List<Teacher> queryList(Map<String, Object> paramMap);
 
-    Integer queryCount(Map<String, Object> paramMap);
+    Integer count(Map<String, Object> paramMap);
 
     int deleteTeacher(List<Integer> ids);
 
-    int addTeacher(Teacher teacher);
+    int addTeacher(Teacher aTeacher);
 
-    Teacher findById(Integer tid);
+    Teacher getById(Integer tid);
 
-    int editTeacher(Teacher teacher);
+    int updateTeacher(Teacher aTeacher);
 
-    Teacher findByTeacher(Teacher teacher);
+    Teacher login(Teacher aTeacher);
 
-    int editPwdByTeacher(Teacher teacher);
+    int updatePasswordByTeacher(Teacher aTeacher);
 }

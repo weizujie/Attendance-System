@@ -1,5 +1,8 @@
 package com.example.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
@@ -9,11 +12,13 @@ import lombok.Data;
  * @date 2021/03/02
  */
 @Data
+@TableName("s_clazz")
 public class Clazz {
 
     /**
      * 班级 id
      */
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**

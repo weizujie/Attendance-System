@@ -1,7 +1,12 @@
 package com.example.entity;
 
-import com.example.util.LeaveConstant;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.constant.LeaveConstant;
 import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * 请假 实体类
@@ -10,17 +15,21 @@ import lombok.Data;
  * @date 2021/03/02
  */
 @Data
-public class Leave {
+@TableName("s_leave")
+public class Leave implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 请假 id
      */
-    private int id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     /**
      * 请假的学生 id
      */
-    private int studentId;
+    private Integer studentId;
 
     /**
      * 请假理由
@@ -30,7 +39,7 @@ public class Leave {
     /**
      * 请假条状态
      */
-    private int status = LeaveConstant.LEAVE_STATUS_WAIT;
+    private Integer status = LeaveConstant.LEAVE_STATUS_WAIT;
 
     /**
      * 批复内容

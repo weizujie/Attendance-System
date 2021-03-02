@@ -4,7 +4,7 @@ import com.example.entity.SelectedCourse;
 import com.example.entity.Student;
 import com.example.service.SelectedCourseService;
 import com.example.util.AjaxResult;
-import com.example.util.UserTypeConstant;
+import com.example.constant.UserTypeConstant;
 import com.example.util.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

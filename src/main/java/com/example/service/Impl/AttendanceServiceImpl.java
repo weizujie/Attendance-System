@@ -25,7 +25,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         List<Attendance> datas = attendanceMapper.queryList(paramMap);
         pageBean.setDatas(datas);
 
-        Integer totalsize = attendanceMapper.queryCount(paramMap);
+        Integer totalsize = attendanceMapper.count(paramMap);
         pageBean.setTotalsize(totalsize);
         return pageBean;
     }

@@ -7,10 +7,10 @@ import com.example.service.AttendanceService;
 import com.example.service.CourseService;
 import com.example.service.SelectedCourseService;
 import com.example.util.AjaxResult;
-import com.example.util.UserTypeConstant;
+import com.example.constant.UserTypeConstant;
 import com.example.util.DateFormatUtil;
 import com.example.util.PageBean;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -26,13 +26,15 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/attendance")
-@AllArgsConstructor
 public class AttendanceController {
 
+    @Autowired
     private AttendanceService attendanceService;
 
+    @Autowired
     private SelectedCourseService selectedCourseService;
 
+    @Autowired
     private CourseService courseService;
 
     /**
@@ -46,7 +48,7 @@ public class AttendanceController {
     /**
      * 异步获取考勤列表数据
      */
-    @GetMapping("/getAttendanceList")
+    @PostMapping("/getAttendanceList")
     @ResponseBody
     public Object getAttendanceList(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
@@ -90,6 +92,7 @@ public class AttendanceController {
             result.put("rows", pageBean.getDatas());
             return result;
         }
+
     }
 
     /**

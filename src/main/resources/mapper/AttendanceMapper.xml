@@ -23,7 +23,7 @@
         limit #{startIndex},#{pagesize}
     </select>
 
-    <select id="queryCount" resultType="int">
+    <select id="count" resultType="int">
         select count(*) from s_attendance
         <where>
             <if test="courseid!=null">and course_id = #{courseid}</if>

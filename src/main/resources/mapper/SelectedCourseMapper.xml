@@ -20,7 +20,7 @@
         limit #{startIndex},#{pagesize}
     </select>
 
-    <select id="queryCount" resultType="int">
+    <select id="count" resultType="int">
         select count(*) from s_selected_course
         <where>
             <if test="studentId!=null">and student_id LIKE concat("%",#{studentId},"%")</if>

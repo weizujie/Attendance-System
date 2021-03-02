@@ -4,7 +4,8 @@ import com.example.entity.Admin;
 
 public interface AdminService {
 
-    Admin findByAdmin(Admin admin);
+    Admin login(Admin admin);
 
-    int editPwdByAdmin(Admin admin);
+    int updatePasswordByAdmin(Admin admin);
+
 }

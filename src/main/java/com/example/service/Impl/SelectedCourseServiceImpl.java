@@ -30,7 +30,7 @@ public class SelectedCourseServiceImpl implements SelectedCourseService {
         List<SelectedCourse> datas = selectedCourseMapper.queryList(paramMap);
         pageBean.setDatas(datas);
 
-        Integer totalsize = selectedCourseMapper.queryCount(paramMap);
+        Integer totalsize = selectedCourseMapper.count(paramMap);
         pageBean.setTotalsize(totalsize);
         return pageBean;
     }

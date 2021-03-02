@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.constant.UserTypeConstant;
 import com.example.entity.Teacher;
 import com.example.service.TeacherService;
 import com.example.util.*;
@@ -127,7 +128,7 @@ public class TeacherController {
 
         AjaxResult ajaxResult = new AjaxResult();
         try {
-            int count = teacherService.editTeacher(teacher);
+            int count = teacherService.updateTeacher(teacher);
             if (count > 0) {
                 ajaxResult.setSuccess(true);
                 ajaxResult.setMessage("修改成功");

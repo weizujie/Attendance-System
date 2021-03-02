@@ -1,11 +1,12 @@
 package com.example.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.entity.Admin;
 import org.springframework.stereotype.Repository;
 
-public interface AdminMapper {
+public interface AdminMapper extends BaseMapper<Admin> {
 
-    Admin getByAdmin(Admin admin);
+    Admin login(Admin aAdmin);
 
-    int updatePasswordByAdmin(Admin admin);
+    int updatePasswordByAdmin(Admin aAdmin);
 }

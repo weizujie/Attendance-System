@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public interface StudenetMapper extends BaseMapper<Student> {
+public interface StudentMapper extends BaseMapper<Student> {
 
     List<Student> queryList(Map<String, Object> paramMap);
 

@@ -24,7 +24,7 @@
         limit #{startIndex},#{pagesize}
     </select>
 
-    <select id="queryCount" resultType="int">
+    <select id="count" resultType="int">
         select count(*) from s_teacher
         <where>
             <if test="username!=null">and username LIKE concat("%",#{username},"%")</if>
@@ -48,7 +48,7 @@
         </where>
     </delete>
 
-    <update id="editTeacher" parameterType="Teacher">
+    <update id="updateTeacher" parameterType="Teacher">
         update s_teacher
         <set>
             <if test="username != null">
@@ -69,21 +69,21 @@
     </update>
 
 
-    <select id="findById" parameterType="int" resultType="Teacher">
+    <select id="getById" parameterType="int" resultType="Teacher">
         select *
         from s_teacher
         where id = #{tid}
     </select>
 
 
-    <select id="findByTeacher" parameterType="Teacher" resultType="Teacher">
+    <select id="login" parameterType="Teacher" resultType="Teacher">
         select *
         from s_teacher
         where username = #{username}
           and password = #{password}
     </select>
 
-    <update id="editPwdByTeacher" parameterType="Teacher">
+    <update id="updatePasswordByTeacher" parameterType="Teacher">
         update s_teacher
         set password = #{password}
         where id = #{id}

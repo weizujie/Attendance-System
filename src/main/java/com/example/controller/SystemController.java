@@ -7,7 +7,7 @@ import com.example.service.AdminService;
 import com.example.service.StudentService;
 import com.example.service.TeacherService;
 import com.example.util.AjaxResult;
-import com.example.util.UserTypeConstant;
+import com.example.constant.UserTypeConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -47,9 +47,9 @@ public class SystemController {
     /**
      * 跳转修改密码页面
      */
-    @GetMapping("/editPassword")
-    public String editPassword() {
-        return "/system/editPassword";
+    @GetMapping("/updatePassword")
+    public String updatePassword() {
+        return "updatePassword";
     }
 
     /**
@@ -68,6 +68,9 @@ public class SystemController {
     @ResponseBody
     public AjaxResult login(String username, String password, String type, HttpSession session) {
 
+        /**
+         * 空值判断
+         */
         AjaxResult ajaxResult = new AjaxResult();
         if (StringUtils.isEmpty(username)) {
             ajaxResult.setSuccess(false);
@@ -80,21 +83,22 @@ public class SystemController {
             return ajaxResult;
         }
 
+        // TODO:将三个角色合成一张表 s_user 并且设置一个字段 user_type 来存储用户的类型
         // 数据库校验
         switch (type) {
             case "1": { // 管理员
                 Admin admin = new Admin();
                 admin.setPassword(password);
                 admin.setUsername(username);
-                Admin ad = adminService.findByAdmin(admin);
-                if (StringUtils.isEmpty(ad)) {
+                Admin dbAdmin = adminService.login(admin);
+                if (StringUtils.isEmpty(dbAdmin)) {
                     ajaxResult.setSuccess(false);
                     ajaxResult.setMessage("用户名或密码错误");
                     return ajaxResult;
                 }
                 ajaxResult.setSuccess(true);
                 // 将登录对象存到 session 对象中
-                session.setAttribute(UserTypeConstant.ADMIN, ad);
+                session.setAttribute(UserTypeConstant.ADMIN, dbAdmin);
                 session.setAttribute(UserTypeConstant.USERTYPE, "1");
                 break;
             }
@@ -102,29 +106,31 @@ public class SystemController {
                 Student student = new Student();
                 student.setPassword(password);
                 student.setUsername(username);
-                Student st = studentService.findByStudent(student);
-                if (StringUtils.isEmpty(st)) {
+                Student dbStudent = studentService.login(student);
+                if (StringUtils.isEmpty(dbStudent)) {
                     ajaxResult.setSuccess(false);
                     ajaxResult.setMessage("用户名或密码错误");
                     return ajaxResult;
                 }
+                // 将登录对象存到 session 对象中
                 ajaxResult.setSuccess(true);
-                session.setAttribute(UserTypeConstant.STUDENT, st);
+                session.setAttribute(UserTypeConstant.STUDENT, dbStudent);
                 session.setAttribute(UserTypeConstant.USERTYPE, "2");
                 break;
             }
-            case "3": { // 老师
+            case "3": { // 教师
                 Teacher teacher = new Teacher();
                 teacher.setPassword(password);
                 teacher.setUsername(username);
-                Teacher tr = teacherService.findByTeacher(teacher);
-                if (StringUtils.isEmpty(tr)) {
+                Teacher dbTeacher = teacherService.login(teacher);
+                if (StringUtils.isEmpty(dbTeacher)) {
                     ajaxResult.setSuccess(false);
                     ajaxResult.setMessage("用户名或密码错误");
                     return ajaxResult;
                 }
+                // 将登录对象存到 session 对象中
                 ajaxResult.setSuccess(true);
-                session.setAttribute(UserTypeConstant.TEACHER, tr);
+                session.setAttribute(UserTypeConstant.TEACHER, dbTeacher);
                 session.setAttribute(UserTypeConstant.USERTYPE, "3");
                 break;
             }
@@ -135,7 +141,7 @@ public class SystemController {
     /**
      * 修改密码
      */
-    @PostMapping("/editPassword")
+    @PostMapping("/updatePassword")
     @ResponseBody
     public AjaxResult editPassword(String password, String newPassword, HttpSession session) {
 
@@ -155,7 +161,7 @@ public class SystemController {
             admin.setPassword(newPassword);
             try {
                 // count: 影响行数，一般值为 1，除非有一模一样的用户数据
-                int count = adminService.editPwdByAdmin(admin);
+                int count = adminService.updatePasswordByAdmin(admin);
                 if (count > 0) {
                     ajaxResult.setSuccess(true);
                     ajaxResult.setMessage("修改成功,请重新登录");
@@ -205,7 +211,7 @@ public class SystemController {
             }
             teacher.setPassword(newPassword);
             try {
-                int count = teacherService.editPwdByTeacher(teacher);
+                int count = teacherService.updatePasswordByTeacher(teacher);
                 if (count > 0) {
                     ajaxResult.setSuccess(true);
                     ajaxResult.setMessage("修改成功,请重新登录");

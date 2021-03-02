@@ -8,17 +8,19 @@ import java.util.Map;
 
 
 public interface TeacherService {
+
     PageBean<Teacher> queryPage(Map<String, Object> paramMap);
 
     int deleteTeacher(List<Integer> ids);
 
-    int addTeacher(Teacher teacher);
+    int addTeacher(Teacher aTeacher);
 
-    Teacher findById(Integer tid);
+    Teacher getById(Integer tid);
 
-    int editTeacher(Teacher teacher);
+    int updateTeacher(Teacher aTeacher);
 
-    Teacher findByTeacher(Teacher teacher);
+    Teacher login(Teacher aTeacher);
 
-    int editPwdByTeacher(Teacher teacher);
+    int updatePasswordByTeacher(Teacher aTeacher);
+
 }

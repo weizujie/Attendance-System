@@ -9,6 +9,16 @@ spring:
       max-file-size: 30MB
       max-request-size: 30MB
 
-mybatis:
-  type-aliases-package: com.example.entity
+
+mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.example.entity
+  global-config:
+    # 关闭自带的 banner
+    banner: false
+    db-config:
+      # 数据库 id 自增
+      id-type: auto
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false

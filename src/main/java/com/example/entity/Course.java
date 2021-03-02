@@ -1,6 +1,11 @@
 package com.example.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+
+import java.io.Serializable;
 
 
 /**
@@ -10,12 +15,16 @@ import lombok.Data;
  * @date 2021/03/02
  */
 @Data
-public class Course {
+@TableName("s_course")
+public class Course implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * 课程 id
      */
-    private int id;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
     /**
      * 课程名称
@@ -25,7 +34,7 @@ public class Course {
     /**
      * 授课教师
      */
-    private int teacherId;
+    private Integer teacherId;
 
     /**
      * 上课时间
@@ -35,12 +44,12 @@ public class Course {
     /**
      * 已选人数
      */
-    private int selectedNum = 0;
+    private Integer selectedNum = 0;
 
     /**
      * 最大可选人数
      */
-    private int maxNum = 50;
+    private Integer maxNum = 50;
 
     /**
      * 课程信息

@@ -25,38 +25,41 @@ public class TeacherServiceImpl implements TeacherService {
         List<Teacher> datas = teacherMapper.queryList(paramMap);
         pageBean.setDatas(datas);
 
-        Integer totalsize = teacherMapper.queryCount(paramMap);
+        Integer totalsize = teacherMapper.count(paramMap);
         pageBean.setTotalsize(totalsize);
         return pageBean;
     }
 
     @Override
     public int deleteTeacher(List<Integer> ids) {
-        return teacherMapper.deleteTeacher(ids);
+        return teacherMapper.deleteBatchIds(ids);
+        // return teacherMapper.deleteTeacher(ids);
     }
 
     @Override
-    public int addTeacher(Teacher teacher) {
-        return teacherMapper.addTeacher(teacher);
+    public int addTeacher(Teacher aTeacher) {
+        return teacherMapper.insert(aTeacher);
+        // return teacherMapper.addTeacher(aTeacher);
     }
 
     @Override
-    public Teacher findById(Integer tid) {
-        return teacherMapper.findById(tid);
+    public Teacher getById(Integer tid) {
+        return teacherMapper.selectById(tid);
+        // return teacherMapper.getById(tid);
     }
 
     @Override
-    public int editTeacher(Teacher teacher) {
-        return teacherMapper.editTeacher(teacher);
+    public int updateTeacher(Teacher aTeacher) {
+        return teacherMapper.updateTeacher(aTeacher);
     }
 
     @Override
-    public Teacher findByTeacher(Teacher teacher) {
-        return teacherMapper.findByTeacher(teacher);
+    public Teacher login(Teacher aTeacher) {
+        return teacherMapper.login(aTeacher);
     }
 
     @Override
-    public int editPwdByTeacher(Teacher teacher) {
-        return teacherMapper.editPwdByTeacher(teacher);
+    public int updatePasswordByTeacher(Teacher aTeacher) {
+        return teacherMapper.updatePasswordByTeacher(aTeacher);
     }
 }

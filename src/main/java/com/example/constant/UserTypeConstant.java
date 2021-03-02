@@ -1,4 +1,4 @@
-package com.example.util;
+package com.example.constant;
 
 /**
  * 用户类型常量

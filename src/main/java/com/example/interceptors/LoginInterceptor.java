@@ -3,7 +3,7 @@ package com.example.interceptors;
 import com.example.entity.Admin;
 import com.example.entity.Student;
 import com.example.entity.Teacher;
-import com.example.util.UserTypeConstant;
+import com.example.constant.UserTypeConstant;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
