@@ -10,14 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * 教师管理 前端控制器
@@ -51,7 +47,7 @@ public class TeacherController {
         if (!clazzid.equals("0")) paramMap.put("clazzid", clazzid);
 
         //判断是老师还是学生权限
-        Teacher teacher = (Teacher) session.getAttribute(Const.TEACHER);
+        Teacher teacher = (Teacher) session.getAttribute(UserTypeConstant.TEACHER);
         if (!StringUtils.isEmpty(teacher)) {
             //是老师权限，只能查询自己的信息
             paramMap.put("teacherid", teacher.getId());

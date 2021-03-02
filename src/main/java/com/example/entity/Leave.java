@@ -1,30 +1,39 @@
 package com.example.entity;
 
-import lombok.AllArgsConstructor;
+import com.example.util.LeaveConstant;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * 请假 实体类
+ *
+ * @author weizujie
+ * @date 2021/03/02
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Leave {
 
-    public static int LEAVE_STATUS_WAIT = 0; // 等待审核
-
-    public static int LEAVE_STATUS_AGREE = 1; // 同意
-
-    public static int LEAVE_STATUS_DISAGREE = -1; // 不同意
-
+    /**
+     * 请假 id
+     */
     private int id;
 
+    /**
+     * 请假的学生 id
+     */
     private int studentId;
 
-    private String info; // 请假理由
+    /**
+     * 请假理由
+     */
+    private String info;
 
-    private int status = LEAVE_STATUS_WAIT; //请假条状态
+    /**
+     * 请假条状态
+     */
+    private int status = LeaveConstant.LEAVE_STATUS_WAIT;
 
-    private String remark; // 批复内容
+    /**
+     * 批复内容
+     */
+    private String remark;
 }

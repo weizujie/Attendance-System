@@ -4,7 +4,7 @@ import com.example.entity.SelectedCourse;
 import com.example.entity.Student;
 import com.example.service.SelectedCourseService;
 import com.example.util.AjaxResult;
-import com.example.util.Const;
+import com.example.util.UserTypeConstant;
 import com.example.util.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,7 +46,7 @@ public class SelectedCourseController {
         if (!studentid.equals("0")) paramMap.put("studentId", studentid);
         if (!courseid.equals("0")) paramMap.put("courseId", courseid);
         //判断是老师还是学生权限
-        Student student = (Student) session.getAttribute(Const.STUDENT);
+        Student student = (Student) session.getAttribute(UserTypeConstant.STUDENT);
         if (!StringUtils.isEmpty(student)) {
             //是学生权限，只能查询自己的信息
             paramMap.put("studentid", student.getId());

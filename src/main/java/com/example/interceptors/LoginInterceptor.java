@@ -3,7 +3,7 @@ package com.example.interceptors;
 import com.example.entity.Admin;
 import com.example.entity.Student;
 import com.example.entity.Teacher;
-import com.example.util.Const;
+import com.example.util.UserTypeConstant;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -23,11 +23,11 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
 
-        Admin admin = (Admin) request.getSession().getAttribute(Const.ADMIN);
+        Admin admin = (Admin) request.getSession().getAttribute(UserTypeConstant.ADMIN);
 
-        Teacher teacher = (Teacher) request.getSession().getAttribute(Const.TEACHER);
+        Teacher teacher = (Teacher) request.getSession().getAttribute(UserTypeConstant.TEACHER);
 
-        Student student = (Student) request.getSession().getAttribute(Const.STUDENT);
+        Student student = (Student) request.getSession().getAttribute(UserTypeConstant.STUDENT);
 
         if (!StringUtils.isEmpty(admin) || !StringUtils.isEmpty(teacher) || !StringUtils.isEmpty(student)) {
             return true;

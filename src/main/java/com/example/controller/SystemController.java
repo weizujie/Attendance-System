@@ -7,7 +7,7 @@ import com.example.service.AdminService;
 import com.example.service.StudentService;
 import com.example.service.TeacherService;
 import com.example.util.AjaxResult;
-import com.example.util.Const;
+import com.example.util.UserTypeConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -94,8 +94,8 @@ public class SystemController {
                 }
                 ajaxResult.setSuccess(true);
                 // 将登录对象存到 session 对象中
-                session.setAttribute(Const.ADMIN, ad);
-                session.setAttribute(Const.USERTYPE, "1");
+                session.setAttribute(UserTypeConstant.ADMIN, ad);
+                session.setAttribute(UserTypeConstant.USERTYPE, "1");
                 break;
             }
             case "2": { // 学生
@@ -109,8 +109,8 @@ public class SystemController {
                     return ajaxResult;
                 }
                 ajaxResult.setSuccess(true);
-                session.setAttribute(Const.STUDENT, st);
-                session.setAttribute(Const.USERTYPE, "2");
+                session.setAttribute(UserTypeConstant.STUDENT, st);
+                session.setAttribute(UserTypeConstant.USERTYPE, "2");
                 break;
             }
             case "3": { // 老师
@@ -124,8 +124,8 @@ public class SystemController {
                     return ajaxResult;
                 }
                 ajaxResult.setSuccess(true);
-                session.setAttribute(Const.TEACHER, tr);
-                session.setAttribute(Const.USERTYPE, "3");
+                session.setAttribute(UserTypeConstant.TEACHER, tr);
+                session.setAttribute(UserTypeConstant.USERTYPE, "3");
                 break;
             }
         }
@@ -141,11 +141,11 @@ public class SystemController {
 
         AjaxResult ajaxResult = new AjaxResult();
         // 从 session 中获取登录用户的类型
-        String usertype = (String) session.getAttribute(Const.USERTYPE);
+        String usertype = (String) session.getAttribute(UserTypeConstant.USERTYPE);
         // 判断是哪类用户登录
         if ("1".equals(usertype)) {
             // 从 session 中获取管理员对象
-            Admin admin = (Admin) session.getAttribute(Const.ADMIN);
+            Admin admin = (Admin) session.getAttribute(UserTypeConstant.ADMIN);
             if (!password.equals(admin.getPassword())) {
                 ajaxResult.setSuccess(false);
                 ajaxResult.setMessage("原密码错误");
@@ -172,7 +172,7 @@ public class SystemController {
 
         if ("2".equals(usertype)) {
             //从 session 中获取学生对象
-            Student student = (Student) session.getAttribute(Const.STUDENT);
+            Student student = (Student) session.getAttribute(UserTypeConstant.STUDENT);
             if (!password.equals(student.getPassword())) {
                 ajaxResult.setSuccess(false);
                 ajaxResult.setMessage("原密码错误");
@@ -197,7 +197,7 @@ public class SystemController {
 
         if ("3".equals(usertype)) {
             // 从 session 中获取教师对象
-            Teacher teacher = (Teacher) session.getAttribute(Const.TEACHER);
+            Teacher teacher = (Teacher) session.getAttribute(UserTypeConstant.TEACHER);
             if (!password.equals(teacher.getPassword())) {
                 ajaxResult.setSuccess(false);
                 ajaxResult.setMessage("原密码错误");

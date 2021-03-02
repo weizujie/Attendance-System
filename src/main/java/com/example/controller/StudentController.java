@@ -8,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -51,7 +48,7 @@ public class StudentController {
         if (!"0".equals(clazzid)) paramMap.put("clazzid", clazzid);
 
         //判断是老师还是学生权限
-        Student student = (Student) session.getAttribute(Const.STUDENT);
+        Student student = (Student) session.getAttribute(UserTypeConstant.STUDENT);
         if (!StringUtils.isEmpty(student)) {
             //是学生权限，只能查询自己的信息
             paramMap.put("studentid", student.getId());

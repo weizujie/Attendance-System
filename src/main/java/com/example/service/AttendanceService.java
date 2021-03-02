@@ -6,6 +6,7 @@ import com.example.util.PageBean;
 import java.util.Map;
 
 public interface AttendanceService {
+
     PageBean<Attendance> queryPage(Map<String, Object> paramMap);
 
     boolean isAttendance(Attendance attendance);
@@ -13,4 +14,5 @@ public interface AttendanceService {
     int addAttendance(Attendance attendance);
 
     int deleteAttendance(Integer id);
+
 }

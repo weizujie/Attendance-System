@@ -15,16 +15,16 @@
             //datagrid初始化
             $('#dataList').datagrid({
                 title:'考勤信息列表',
-                iconCls:'icon-more',//图标
+                iconCls:'icon-more', //图标
                 border: true,
-                collapsible: false,//是否可折叠的
-                fit: true,//自动大小
-                method: "post",
+                collapsible: false, //是否可折叠的
+                fit: true, //自动大小
+                method: "post", // post
                 url:[[@{/attendance/getAttendanceList}]],
                 idField:'id',
-                singleSelect: true,//是否单选
-                pagination: true,//分页控件
-                rownumbers: true,//行号
+                singleSelect: true, //是否单选
+                pagination: true, //分页控件
+                rownumbers: true, //行号
                 sortName:'id',
                 sortOrder:'DESC',
                 remoteSort: false,
@@ -265,7 +265,7 @@
                 //添加信息课程选择框
                 var u = [[@{/attendance/getStudentSelectedCourseList}]];
                 $("#add_courseList").combobox({
-                    url:u+"?studentid="+sid,
+                    url:u+"?studentId="+sid,
                     onLoadSuccess: function(){
                         //默认选择第一条数据
                         var data = $(this).combobox("getData");

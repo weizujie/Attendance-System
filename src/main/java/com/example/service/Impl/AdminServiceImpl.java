@@ -14,12 +14,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin findByAdmin(Admin admin) {
-        return adminMapper.findByAdmin(admin);
+        return adminMapper.getByAdmin(admin);
     }
 
     @Override
     public int editPwdByAdmin(Admin admin) {
-        return adminMapper.editPwdByAdmin(admin);
+        return adminMapper.updatePasswordByAdmin(admin);
     }
 
 }
