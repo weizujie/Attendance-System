@@ -4,7 +4,6 @@
 
     <resultMap type="com.example.entity.Teacher" id="TeacherInfo">
         <result column="id" property="id"/>
-        <result column="sn" property="sn"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
         <result column="clazz_id" property="clazzId"/>
@@ -34,8 +33,8 @@
     </select>
 
     <insert id="addTeacher" parameterType="Teacher">
-        insert into s_teacher(sn, username, password, clazz_id, sex, mobile)
-        values (#{sn}, #{username}, #{password}, #{clazzId}, #{sex}, #{mobile})
+        insert into s_teacher(username, password, clazz_id, sex, mobile)
+        values (#{username}, #{password}, #{clazzId}, #{sex}, #{mobile})
     </insert>
 
     <delete id="deleteTeacher" parameterType="java.util.ArrayList">

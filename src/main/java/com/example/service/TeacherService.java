@@ -1,6 +1,8 @@
 package com.example.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.entity.Teacher;
+import com.example.util.AjaxResult;
 import com.example.util.PageBean;
 
 import java.util.List;
@@ -8,8 +10,6 @@ import java.util.Map;
 
 
 public interface TeacherService {
-
-    PageBean<Teacher> queryPage(Map<String, Object> paramMap);
 
     int deleteTeacher(List<Integer> ids);
 
@@ -23,4 +23,5 @@ public interface TeacherService {
 
     int updatePasswordByTeacher(Teacher aTeacher);
 
+    Object selectList(Page<Teacher> teacherPage);
 }

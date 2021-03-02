@@ -1,5 +1,9 @@
 package com.example.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.entity.Teacher;
 import com.example.mapper.TeacherMapper;
 import com.example.service.TeacherService;
@@ -11,24 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class TeacherServiceImpl implements TeacherService {
+public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> implements TeacherService {
 
     @Autowired
     private TeacherMapper teacherMapper;
-
-    @Override
-    public PageBean<Teacher> queryPage(Map<String, Object> paramMap) {
-        PageBean<Teacher> pageBean = new PageBean<>((Integer) paramMap.get("pageno"), (Integer) paramMap.get("pagesize"));
-
-        Integer startIndex = pageBean.getStartIndex();
-        paramMap.put("startIndex", startIndex);
-        List<Teacher> datas = teacherMapper.queryList(paramMap);
-        pageBean.setDatas(datas);
-
-        Integer totalsize = teacherMapper.count(paramMap);
-        pageBean.setTotalsize(totalsize);
-        return pageBean;
-    }
 
     @Override
     public int deleteTeacher(List<Integer> ids) {
@@ -61,5 +51,11 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public int updatePasswordByTeacher(Teacher aTeacher) {
         return teacherMapper.updatePasswordByTeacher(aTeacher);
+    }
+
+    @Override
+    public Object selectList(Page<Teacher> teacherPage) {
+        QueryWrapper<Teacher> wrapper = new QueryWrapper<>();
+        return baseMapper.selectPage(teacherPage, wrapper);
     }
 }

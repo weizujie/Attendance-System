@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.constant.UserTypeConstant;
 import com.example.entity.Teacher;
 import com.example.service.TeacherService;
@@ -37,32 +39,33 @@ public class TeacherController {
      */
     @PostMapping("/getTeacherList")
     @ResponseBody
-    public Object getTeacherList(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                 @RequestParam(value = "rows", defaultValue = "100") Integer rows,
-                                 String teacherName,
-                                 @RequestParam(value = "clazzid", defaultValue = "0") String clazzid, String from, HttpSession session) {
-        Map<String, Object> paramMap = new HashMap();
+    public Object getTeacherList(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", defaultValue = "100") Integer rows,
+            @RequestParam(value = "clazzId", defaultValue = "0") String clazzId,
+            String teacherName, HttpSession session) {
+
+        Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("pageno", page);
         paramMap.put("pagesize", rows);
         if (!StringUtils.isEmpty(teacherName)) paramMap.put("username", teacherName);
-        if (!clazzid.equals("0")) paramMap.put("clazzid", clazzid);
+        if (!clazzId.equals("0")) paramMap.put("clazzid", clazzId);
 
         //判断是老师还是学生权限
         Teacher teacher = (Teacher) session.getAttribute(UserTypeConstant.TEACHER);
         if (!StringUtils.isEmpty(teacher)) {
             //是老师权限，只能查询自己的信息
-            paramMap.put("teacherid", teacher.getId());
+            paramMap.put("teacherId", teacher.getId());
         }
 
-        PageBean<Teacher> pageBean = teacherService.queryPage(paramMap);
-        if (!StringUtils.isEmpty(from) && from.equals("combox")) {
-            return pageBean.getDatas();
-        } else {
-            Map<String, Object> result = new HashMap();
-            result.put("total", pageBean.getTotalsize());
-            result.put("rows", pageBean.getDatas());
-            return result;
-        }
+        // 分页
+        Map<String, Object> result = new HashMap<>();
+        Page<Teacher> teacherPage = new Page<>(page, rows);
+        Object list = teacherService.selectList(teacherPage);
+        result.put("total", teacherPage.getTotal());
+        result.put("rows", list);
+        return result;
+
     }
 
     /**
@@ -97,8 +100,6 @@ public class TeacherController {
     public AjaxResult addTeacher(Teacher teacher) {
 
         AjaxResult ajaxResult = new AjaxResult();
-        teacher.setSn(SnGenerateUtil.generateTeacherSn(teacher.getClazzId()));
-
         //保存学生信息到数据库
         try {
             int count = teacherService.addTeacher(teacher);

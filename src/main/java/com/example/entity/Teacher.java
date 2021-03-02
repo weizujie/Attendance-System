@@ -26,11 +26,6 @@ public class Teacher implements Serializable {
     private Integer id;
 
     /**
-     * 教师工号（随机生成）
-     */
-    private String sn;
-
-    /**
      * 教师登录名
      */
     private String username;
